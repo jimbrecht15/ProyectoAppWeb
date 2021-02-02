@@ -2,6 +2,7 @@ package es.programia.info.servicios;
 
 import es.programia.info.entidades.Interesado;
 import es.programia.info.excepciones.GestionSolicitudesException;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
@@ -11,34 +12,34 @@ import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-
+@Stateless
 public class InteresadoService implements InteresadoServiceLocal {
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "GestionSolicitudesInfoPU")
     private EntityManager em;
-    
+            
     @Override
     public Interesado buscarInteresadoporCriterio(String nombre, String apellidos, String empresa) throws GestionSolicitudesException {
         Query query = em.createNamedQuery("Interesado.findByNombreApellidoEmpresa");
-        if (nombre == null){
+        if (nombre == null || nombre.trim().length() == 0){
             nombre = "%";
         } 
-        if (apellidos == null){
+        if (apellidos == null || apellidos.trim().length() == 0){
             apellidos = "%";
         }
-        if (empresa == null){
-            apellidos = "%";
+        if (empresa == null || empresa.trim().length() == 0){
+            empresa = "%";
         }
         query.setParameter("nombre", nombre);
         query.setParameter("apellidos", apellidos);
         query.setParameter("empresa", empresa);
         
         query.setMaxResults(1);
-        
+        String consulta = query.toString();
         List<Interesado> interesados = query.getResultList();
         
         if(interesados == null || interesados.size()==0){
-            throw new GestionSolicitudesException("info_busqueda_no_resultados");
+                throw new GestionSolicitudesException("info_busqueda_no_resultados");
         }
         return interesados.get(0);
     }
@@ -55,7 +56,7 @@ public class InteresadoService implements InteresadoServiceLocal {
         try {
             Interesado i = em.find(Interesado.class, interesado.getIdInteresado());
             if (i ==  null){
-                GestionSolicitudesException("error_update_interesado_not_found");
+                 throw new GestionSolicitudesException("error_update_interesado_not_found");
             }
             em.merge(interesado);
             
@@ -65,7 +66,11 @@ public class InteresadoService implements InteresadoServiceLocal {
         }
     }
 
-    private void GestionSolicitudesException(String error_update_interesado_not_found) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Override
+    public Collection<Interesado> getAllUsuarios() {
+       
+       Query query = em.createNamedQuery("Interesado.findAll");
+        
+        return query.getResultList();
     }
 }

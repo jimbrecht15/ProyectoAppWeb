@@ -56,6 +56,7 @@ public class SolicitudeInfo implements Serializable {
     private Integer version;
     @JoinColumn(name = "ID_CATEGORIA", referencedColumnName = "ID_CATEGORIA")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    
     private Categoria idCategoria;
     @JoinColumn(name = "ID_INTERESADO", referencedColumnName = "ID_INTERESADO")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

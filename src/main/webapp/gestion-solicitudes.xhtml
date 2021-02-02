@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./WEB-INF/VISTAS/plantilla/plantilla.xhtml">
+
+            <ui:define name="top">
+                GESTION SOLICITUDES DE INFORMACIÓN
+            </ui:define>
+
+            <ui:define name="left">
+                <ui:include src ="./WEB-INF/VISTAS/comun/menu.xhtml" />
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form id="formBusc">
+                    #{textos.app_titulo} 
+                    <br />
+                    <h:outputText value="BUSCAR INTERESADO POR CRITERIO"
+                                  styleClass="titulo" /><br />
+                    
+                    <h:panelGrid title="Interesados" columns="3">
+                        Nombre: <h:inputText id="camponombre"
+                                             value="#{gestion.interesado.nombre}"
+                                             required="true"/>
+                        <h:message for="camponombre" />
+                        Apellido: <h:inputText id="campoapellido"
+                                               value="#{gestion.interesado.apellidos}"
+                                             required="true"/>
+                        <h:message for="campoapellido" />
+                        Empresa: <h:inputText id="campoempresa"
+                                              value="#{gestion.interesado.empresa}"/>
+                        <h:message for="campoempresa" />
+                        
+                        <h:commandButton value="Nuevo" action="#{gestion.buscar()}"/>
+                        
+                    </h:panelGrid>
+                </h:form>
+                <br />
+                
+                
+                 <h:dataTable value="#{gestion.misInteresados}" var="interesado"> 
+            <h:column>
+                <f:facet name="header">Nombre </f:facet>
+                #{interesado.nombre}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Apellidos</f:facet>
+                #{interesado.apellidos}
+            </h:column>
+            </h:dataTable>
+                
+            </ui:define>
+            
+        </ui:composition>
+        
+        
+        <h:dataTable value="#{gestion.misInteresados}" var="interesado"> 
+            <h:column>
+                <f:facet name="header">Nombre </f:facet>
+                #{interesado.nombre}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Apellidos</f:facet>
+                #{interesado.apellidos}
+            </h:column>
+            </h:dataTable>
+
+    </body>
+</html>

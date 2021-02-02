@@ -3,6 +3,7 @@ package es.programia.info.servicios;
 
 import es.programia.info.entidades.Interesado;
 import es.programia.info.excepciones.GestionSolicitudesException;
+import java.util.Collection;
 import javax.ejb.Local;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -10,7 +11,7 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 
 
-@TransactionManagement(TransactionManagementType.CONTAINER)
+@Local
 public interface InteresadoServiceLocal {
     
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -21,4 +22,6 @@ public interface InteresadoServiceLocal {
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     void modificarInteresado (Interesado interesado) throws GestionSolicitudesException;
+    
+    public Collection<Interesado> getAllUsuarios() ;
 }

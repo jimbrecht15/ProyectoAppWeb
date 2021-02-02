@@ -45,9 +45,9 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Interesado.findByEnviarNotificaciones", query = "SELECT i FROM Interesado i WHERE i.enviarNotificaciones = :enviarNotificaciones"),
     @NamedQuery(name = "Interesado.findByVersion", query = "SELECT i FROM Interesado i WHERE i.version = :version"),
     @NamedQuery(name = "Interesado.findByNombreApellidoEmpresa", 
-                        query = "SELECT i FROM Interesado i WHERE i.idInteresado = :idInteresado AND "
-                                + " WHERE i.apellidos = :apellidos AND "
-                                + " WHERE i.empresa = :empresa ")})
+                        query = "SELECT i FROM Interesado i WHERE i.nombre like :nombre AND "
+                                + " i.apellidos like :apellidos AND "
+                                + " i.empresa like :empresa ")})
 
 public class Interesado implements Serializable {
 
@@ -88,6 +88,7 @@ public class Interesado implements Serializable {
     @NotNull
     @Column(name = "ENVIAR_NOTIFICACIONES")
     private short enviarNotificaciones;
+    
     @Column(name = "VERSION")
     private Integer version;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "interesado", fetch = FetchType.EAGER)
