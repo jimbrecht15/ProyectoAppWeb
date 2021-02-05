@@ -10,66 +10,128 @@
         <ui:composition template="./WEB-INF/VISTAS/plantilla/plantilla.xhtml">
 
             <ui:define name="top">
-                GESTION SOLICITUDES DE INFORMACIÓN
-            </ui:define>
-
-            <ui:define name="left">
-                <ui:include src ="./WEB-INF/VISTAS/comun/menu.xhtml" />
+                #{textos.app_titulo}
             </ui:define>
 
             <ui:define name="content">
                 <h:form id="formBusc">
-                    #{textos.app_titulo} 
+
                     <br />
-                    <h:outputText value="BUSCAR INTERESADO POR CRITERIO"
+                    <h:outputText value="#{textos.app_titulo}"
                                   styleClass="titulo" /><br />
-                    
+
                     <h:panelGrid title="Interesados" columns="3">
-                        Nombre: <h:inputText id="camponombre"
+                        Nombre: <h:inputText id="#{textos.nombre}"
                                              value="#{gestion.interesado.nombre}"
                                              required="true"/>
                         <h:message for="camponombre" />
-                        Apellido: <h:inputText id="campoapellido"
+                        Apellido: <h:inputText id="#{textos.apellido}"
                                                value="#{gestion.interesado.apellidos}"
-                                             required="true"/>
+                                               />
                         <h:message for="campoapellido" />
-                        Empresa: <h:inputText id="campoempresa"
+                        Empresa: <h:inputText id="#{textos.empresa}"
                                               value="#{gestion.interesado.empresa}"/>
                         <h:message for="campoempresa" />
-                        
-                        <h:commandButton value="Nuevo" action="#{gestion.buscar()}"/>
-                        
+
+                        <h:commandButton value="#{textos.btn_buscar}" action="#{gestion.buscar()}"/>
+                        <h:commandButton value="#{textos.btn_nuevo}" action="#{gestion.modoNuevo()}"
+                                         immediate="true" />
+
                     </h:panelGrid>
                 </h:form>
                 <br />
-                
-                
-                 <h:dataTable value="#{gestion.misInteresados}" var="interesado"> 
-            <h:column>
-                <f:facet name="header">Nombre </f:facet>
-                #{interesado.nombre}
-            </h:column>
-            <h:column>
-                <f:facet name="header">Apellidos</f:facet>
-                #{interesado.apellidos}
-            </h:column>
-            </h:dataTable>
-                
-            </ui:define>
-            
-        </ui:composition>
-        
-        
-        <h:dataTable value="#{gestion.misInteresados}" var="interesado"> 
-            <h:column>
-                <f:facet name="header">Nombre </f:facet>
-                #{interesado.nombre}
-            </h:column>
-            <h:column>
-                <f:facet name="header">Apellidos</f:facet>
-                #{interesado.apellidos}
-            </h:column>
-            </h:dataTable>
 
+                <h:form id="formAlta" rendered="#{gestion.visible}">
+                    #{textos.app_titulo} 
+                    <br />
+                    <h:outputText value= "DATOS INTERESADO"
+                                  styleClass="titulo" /><br />
+
+                    <h:panelGrid title="Interesados" columns="6">
+                        #{textos.nombre} <h:inputText id="camponombre"
+                                             value="#{gestion.interesado.nombre}"
+                                             required="true"
+                                             disabled ="#{!gestion.editable}"/>
+                        <h:message for="camponombre" />
+                        #{textos.apellido} <h:inputText id="campoapellido"
+                                               value="#{gestion.interesado.apellidos}"
+                                               required="true"
+                                               disabled ="#{not gestion.editable}"/>
+                        <h:message for="campoapellido" />
+                        #{textos.empresa} <h:inputText id="campoempresa"
+                                              value="#{gestion.interesado.empresa}"
+                                              disabled ="#{!gestion.editable}"/>
+                        <h:message for="campoempresa" />
+                        Email: <h:inputText id="campoemail"
+                                            value="#{gestion.interesado.EMail}"
+                                            disabled ="#{!gestion.editable}"/>
+                        <h:message for="campoemail" />
+                        Teléfono: <h:inputText id="campotelefono"
+                                               value="#{gestion.interesado.telefono}"
+                                               disabled ="#{!gestion.editable}">
+
+                        </h:inputText>
+                        <h:message for="campotelefono" />
+                        Móvil: <h:inputText id="campomovil"
+                                            value="#{gestion.interesado.movil}"
+                                            disabled ="#{!gestion.editable}">
+
+                        </h:inputText>
+                        <h:message for="campomovil" />
+                        Provincia: <h:inputText id="campoprovincia"
+                                                value="#{gestion.interesado.EMail}"
+                                                disabled ="#{!gestion.editable}"/>
+                        <h:message for="campoprovincia" />
+
+                    </h:panelGrid>
+                    <h:commandButton value="#{textos.btn_cancelar}" action="#{gestion.cancelar()}"
+                                     immediate="true" />
+                    <h:commandButton value="#{textos.btn_grabarModi}" action="#{gestion.grabar()}"
+                                     rendered="#{gestion.accionModificar}"/>
+                    <h:commandButton value="#{textos.btn_grabarNuevo}" action="#{gestion.grabar()}"
+                                     rendered="#{gestion.accionNuevo}"/>
+                    <h:commandButton value="#{textos.btn_editar}" action="#{gestion.editar()}"
+                                     immediate="true" rendered="#{!gestion.accionNuevo}"/>
+                </h:form>
+
+
+                <br />
+                <h:form id="formListaSol" rendered="#{gestion.visible}">
+                    <h:outputText value ="LISTA DE SOLICITUDES"
+                                  styleClass="titulo" />
+                    <br />
+                    <h:dataTable value="#{gestion.interesado.solicitudeInfoList}"
+                                 var="item" rendered="#{gestion.visible}" border="1">
+                    <h:column>
+                        <f:facet name="header">Fecha solicitud</f:facet>
+                        <h:outputText value ="#{item.fechaSolicitud}" >
+                                      <f:convertDateTime dateStyle="short" />
+                                </h:outputText>
+/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Tema interes</f:facet>
+                        <h:outputText value ="#{item.categoria.categoria}" />
+                    </h:column>
+                    </h:dataTable>
+                </h:form>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+        <ui:remove>
+            <h:dataTable value="#{gestion.misInteresados}" var="interesado"> 
+                <h:column>
+                    <f:facet name="header">Nombre </f:facet>
+                        #{interesado.nombre}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Apellidos</f:facet>
+                        #{interesado.apellidos}
+                </h:column>
+            </h:dataTable>
+        </ui:remove>
     </body>
 </html>

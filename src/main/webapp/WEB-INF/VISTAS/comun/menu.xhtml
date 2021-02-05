@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
-    <f:view locale="#{idioma.idioma}" />
+    <f:view locale="#{idioma.idioma}" >
     <h:head>
         <title>#{textos.app_titulo}</title>
     </h:head>
@@ -12,9 +12,11 @@
             <h:outputText value ="Menu" styleClass="titulo" /> <br />
             <h:panelGroup style="margin-top: 10px;">
                 <h:commandLink value ="Inglés" action ="#{idioma.cambiar('en')}" />
+                <br />
                 <h:commandLink value ="Español" action ="#{idioma.cambiar('es')}" />
             </h:panelGroup>
         </h:form>
     </h:body>
+    </f:view>     
 </html>
 

@@ -6,6 +6,7 @@
 package es.programia.info.entidades;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -57,7 +58,7 @@ public class SolicitudeInfo implements Serializable {
     @JoinColumn(name = "ID_CATEGORIA", referencedColumnName = "ID_CATEGORIA")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     
-    private Categoria idCategoria;
+    private Categoria categoria;
     @JoinColumn(name = "ID_INTERESADO", referencedColumnName = "ID_INTERESADO")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Interesado interesado;
@@ -83,8 +84,10 @@ public class SolicitudeInfo implements Serializable {
         this.idSolicitud = idSolicitud;
     }
 
-    public Date getFechaSolicitud() {
-        return fechaSolicitud;
+    public String  getFechaSolicitud() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = format.format( fechaSolicitud);
+        return dateString;
     }
 
     public void setFechaSolicitud(Date fechaSolicitud) {
@@ -107,12 +110,12 @@ public class SolicitudeInfo implements Serializable {
         this.version = version;
     }
 
-    public Categoria getIdCategoria() {
-        return idCategoria;
+    public Categoria getCategoria() {
+        return categoria;
     }
 
-    public void setIdCategoria(Categoria idCategoria) {
-        this.idCategoria = idCategoria;
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
     public Interesado getInteresado() {

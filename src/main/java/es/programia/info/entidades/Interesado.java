@@ -75,10 +75,10 @@ public class Interesado implements Serializable {
     @Size(max = 9)
     @Column(name = "MOVIL")
     private String movil;
-    @Size(max = 9)
+    //@Size(max = 9)
     @Column(name = "TELEFONO")
     private String telefono;
-    @Size(max = 60)
+    //@Size(max = 60)
     @Column(name = "PROVINCIA")
     private String provincia;
     @Column(name = "FECHA_ALTA")

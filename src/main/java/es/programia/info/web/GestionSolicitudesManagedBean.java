@@ -1,4 +1,3 @@
-
 package es.programia.info.web;
 
 import es.programia.info.entidades.Interesado;
@@ -16,29 +15,36 @@ import javax.faces.view.ViewScoped;
 
 @Named(value = "gestion")
 @ViewScoped
-public class GestionSolicitudesManagedBean implements Serializable{
+public class GestionSolicitudesManagedBean implements Serializable {
 
     private Interesado interesado = new Interesado();
     
+    
+
     private Collection<Interesado> misInteresados;
-    
-    @EJB private InteresadoServiceLocal servicio;
-    
-    private static Logger log= Logger.getLogger("GestionSolicitudBean");
-            
+    private boolean visible = false;
+    private boolean editable = false;
+    private boolean accionNuevo = false;
+    private boolean accionModificar = false;
+
+    @EJB
+    private InteresadoServiceLocal servicio;
+
+    private static Logger log = Logger.getLogger("GestionSolicitudBean");
+
     public GestionSolicitudesManagedBean() {
-       
+
     }
-    
+
     @PostConstruct
-    public void inicializar(){
-         this.misInteresados = servicio.getAllUsuarios();
-     }
-    
+    public void inicializar() {
+        this.misInteresados = servicio.getAllUsuarios();
+    }
+
     public Collection<Interesado> getMisInteresados() {
         return misInteresados;
     }
-         
+
     public Interesado getInteresado() {
         return interesado;
     }
@@ -47,7 +53,6 @@ public class GestionSolicitudesManagedBean implements Serializable{
         this.interesado = interesado;
     }
 
-   
     public static Logger getLog() {
         return log;
     }
@@ -55,18 +60,97 @@ public class GestionSolicitudesManagedBean implements Serializable{
     public static void setLog(Logger log) {
         GestionSolicitudesManagedBean.log = log;
     }
-    
-     public String buscar(){
-         try {
-            
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+
+    public boolean isAccionNuevo() {
+        return accionNuevo;
+    }
+
+    public void setAccionNuevo(boolean accionNuevo) {
+        this.accionNuevo = accionNuevo;
+    }
+
+    public boolean isAccionModificar() {
+        return accionModificar;
+    }
+
+    public void setAccionModificar(boolean accionModificar) {
+        this.accionModificar = accionModificar;
+    }
+
+    public String buscar() {
+        try {
+
             this.interesado = servicio.buscarInteresadoporCriterio(interesado.getNombre(), interesado.getApellidos(), interesado.getEmpresa());
-             System.out.println(interesado);
+            System.out.println(interesado);
+            visible = true;
             return null;
         } catch (GestionSolicitudesException ex) {
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.addMessage(null, new FacesMessage(ex.getMessage()));
             return null;
         }
-     }
-    
+    }
+
+    public String modoNuevo() {
+        visible = true;
+        accionNuevo = true;
+        editable = true;
+        return null;
+    }
+
+    public String cancelar() {
+        return "gestion-solicitudes";
+    }
+
+    public String grabar() {
+        if (accionNuevo == true) {
+            try {
+                servicio.crearNuevoInteresado(interesado);
+                FacesContext ctx = FacesContext.getCurrentInstance();
+                FacesMessage mns = new FacesMessage("Usuario dado de alta");
+                ctx.addMessage(null, mns);
+
+            } catch (Exception e) {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                fc.addMessage(null, new FacesMessage(e.getMessage()));
+
+            }
+        } else if (accionModificar == true) {
+            try {
+                servicio.modificarInteresado(interesado);
+                FacesContext ctx = FacesContext.getCurrentInstance();
+                FacesMessage mns = new FacesMessage("Usuario modificado");
+                ctx.addMessage(null, mns);
+
+            } catch (Exception e) {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                fc.addMessage(null, new FacesMessage(e.getMessage()));
+
+            }
+        }
+        return null;
+    }
+
+    public String editar() {
+        editable = true;
+        accionModificar = true;
+        return null;
+    }
+
 }

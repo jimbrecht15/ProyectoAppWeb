@@ -5,20 +5,21 @@
  */
 package es.programia.info.web;
 
+import java.io.Serializable;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
+import javax.enterprise.context.SessionScoped;
 
 /**
  *
  * @author user
  */
 @Named(value = "idioma")
-@Dependent
-public class IdiomaManagedBean {
+@SessionScoped
+public class IdiomaManagedBean implements Serializable{
 
         
     //Atributos
-    String idioma; 
+    String idioma = "es"; 
     
     public IdiomaManagedBean() {
     }

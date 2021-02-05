@@ -39,7 +39,7 @@ public class InteresadoService implements InteresadoServiceLocal {
         List<Interesado> interesados = query.getResultList();
         
         if(interesados == null || interesados.size()==0){
-                throw new GestionSolicitudesException("info_busqueda_no_resultados");
+                throw new GestionSolicitudesException("Error en la busqueda - No hay interesados para el criterio seleccionado");
         }
         return interesados.get(0);
     }
@@ -56,7 +56,7 @@ public class InteresadoService implements InteresadoServiceLocal {
         try {
             Interesado i = em.find(Interesado.class, interesado.getIdInteresado());
             if (i ==  null){
-                 throw new GestionSolicitudesException("error_update_interesado_not_found");
+                 throw new GestionSolicitudesException("Error en actualizar el interesado");
             }
             em.merge(interesado);
             
