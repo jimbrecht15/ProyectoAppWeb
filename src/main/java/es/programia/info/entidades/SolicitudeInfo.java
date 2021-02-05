@@ -84,12 +84,12 @@ public class SolicitudeInfo implements Serializable {
         this.idSolicitud = idSolicitud;
     }
 
-    public String  getFechaSolicitud() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String dateString = format.format( fechaSolicitud);
-        return dateString;
+    public Date  getFechaSolicitud() {
+        //SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        //String dateString = format.format( fechaSolicitud);
+        return fechaSolicitud;
     }
-
+       
     public void setFechaSolicitud(Date fechaSolicitud) {
         this.fechaSolicitud = fechaSolicitud;
     }
